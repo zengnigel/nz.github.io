@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 智慧型紅外線 AI 冷氣控制器——我的第一步</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232563eb%22 width=%22100%22 height=%22100%22 rx=%2215%22/><text x=%2250%22 y=%2270%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>N</text></svg>">
+  <style>
+    .post-header { padding: 3rem 0 1.5rem; }
+    .post-date   { color: var(--text-muted); font-size: .875rem; margin-bottom: .75rem; }
+    .post-title  { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; }
+    .post-tags   { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+    .post-body   { padding-bottom: 4rem; }
+    .post-body h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 .75rem; }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8; }
+    .post-body ul, .post-body ol { margin: 0 0 1rem 1.5rem; color: var(--text-secondary); line-height: 1.8; }
+    .post-body img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+    .post-body em  { font-style: italic; color: var(--text-muted); font-size: .875rem; }
+    .post-body code { background: var(--tag-bg); padding: .2rem .4rem; border-radius: 4px; font-size: .875em; }
+    .post-body pre  { background: var(--tag-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+    .post-body pre code { background: none; padding: 0; }
+    .back-link  { display: inline-block; margin: 1.5rem 0; color: var(--text-secondary); font-size: .875rem; }
+    .back-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="../index-zh.html" class="nav-link active">首頁</a>
+        <a href="../index.html" class="nav-link">English</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="切換深色模式">
+          <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <a href="../index-zh.html" class="back-link">← 返回首頁</a>
+
+      <div class="post-header">
+        <p class="post-date">2025-07-02</p>
+        <h1 class="post-title">🚀 智慧型紅外線 AI 冷氣控制器——我的第一步</h1>
+        <div class="post-tags"><span class="tag">ESP32</span><span class="tag">IR</span><span class="tag">AC</span><span class="tag">Smart Home</span><span class="tag">PlatformIO</span><span class="tag">AI</span><span class="tag">Edge Computing</span></div>
+      </div>
+
+      <article class="post-body">
+        <p>這篇文章標誌著我開始打造一套端到端（E2E）邊緣 AI agent、用來控制冷氣的旅程。文中整理了我最初的需求，以及到目前為止已完成的基礎步驟。</p>
+<h2>1. 我的需求</h2>
+<p>這個專案的核心目標很清楚：</p>
+<ul>
+<li>首先，我要做一套 <strong>E2E 邊緣 AI agent</strong>，能透過紅外線訊號控制分離式 <strong>TECO</strong> 冷氣。</li>
+<li>其次，我希望同時支援 <strong>手動智慧控制</strong>（我設想用日後的 App 或語音介面來實作），以及會依感測器資料反應的 <strong>自主 AI 模式</strong>。</li>
+<li>最後，我先用 <strong>ESP32 DevKitC (WROOM)</strong> 當第一版的 IR 橋接器，並保留未來擴充更完整後端 AI 與智慧家庭整合的空間。</li>
+</ul>
+<h2>2. 我已完成的步驟</h2>
+<p>為這個野心不小的專案打底，我已把必要的設定階段跑過一輪。</p>
+<h3>✅ 硬體準備</h3>
+<p>我一開始先挑選並採購硬體。我選了 <strong>HX1838 紅外線接收／發射套件</strong>，因為容易取得也好上手，而且我買了兩組當備品。主控方面我用 <strong>ESP32 DevKitC</strong>，看中它 Wi‑Fi 與藍牙能力，方便日後做智慧功能。為了方便試作，我也準備了 <strong>麵包板</strong>、一整組 <strong>杜邦線</strong>，以及 <strong>5 V 1 A USB 變壓器</strong> 加上可傳資料的 <strong>micro‑USB 線</strong>，供電與燒錄都用得上。</p>
+<h3>✅ 配線</h3>
+<p>硬體到手後，下一步是把基本線接好。我把 HX1838 紅外線接收器仔細接上：VCC 接到 ESP32 的 5 V（或 3.3 V）、GND 對 GND、OUT 接到 ESP32 的 <strong>GPIO 5</strong>。我也反覆檢查麵包板上的接線，確認牢固、正確，才通電。</p>
+<h3>✅ 開發環境</h3>
+<p>要好效率，穩定的開發環境很重要，而我這邊已經就緒。我裝好了 <strong>VS Code</strong> 和 <strong>PlatformIO IDE 擴充套件</strong>，在嵌入式開發上整合體驗很好。我在 PlatformIO 裡開了新專案，目標板選 <strong>ESP32 Dev Module</strong>，框架用 <strong>Arduino</strong>，好降低 ESP32 程式門檻。為了確認一切正常，我編譯並燒錄了一個簡單的「Blink + 序列埠輸出」 sketch。燒錄成功，終端機輸出如下：大約 <strong>46.10 秒</strong> 寫入 <strong>269488 bytes</strong>。</p>
+<p><img alt="Successful PlatformIO sketch upload to ESP32" src="/assets/images/first_upload.png" />
+<em>圖 1：PlatformIO sketch 成功燒錄到 ESP32。</em></p>
+<h3>✅ 序列埠監看</h3>
+<p>要除錯與驗證，一定要會看裝置輸出，所以我把 <strong>PlatformIO Serial Monitor</strong>（VS Code 裡 🔌 插頭圖示）摸熟了。透過它我確認了 <strong>LED 閃爍</strong>，也看到序列埠每秒印出 “LED ON/OFF”，代表程式在跑。我也學會用 Ctrl+C 或垃圾桶圖示乾淨地關掉 Serial Monitor，避免之後 <strong>序列埠被占用</strong> 的惱人問題。</p>
+<p><img alt="LED ON/OFF Serial Output" src="/assets/images/led_on_off.png" />
+<em>圖 2：Serial Monitor 交替顯示 “LED ON” 與 “LED OFF”。</em></p>
+<h2>3. 下一步計畫</h2>
+<p>我接下來要立即準備 HX1838 的 <strong>IR 測試流程</strong>，包括：</p>
+<ol>
+<li>在 PlatformIO 專案裡 <strong>安裝</strong> <code>IRremoteESP8266</code> 函式庫——處理紅外線通訊少不了它。</li>
+<li>把目前的閃燈 sketch <strong>換成</strong> 專門做 IR 接收／重播的 sketch。</li>
+<li>用 Serial Monitor <strong>錄下 TECO 遙控器的代碼</strong>，再把代碼 <strong>重播回冷氣</strong>，確認真的能控制。</li>
+</ol>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Nigel Zeng。純 HTML/CSS/JS 製作。</p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

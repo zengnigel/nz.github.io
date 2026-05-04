@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>再見了，Jekyll</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232563eb%22 width=%22100%22 height=%22100%22 rx=%2215%22/><text x=%2250%22 y=%2270%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>N</text></svg>">
+  <style>
+    .post-header { padding: 3rem 0 1.5rem; }
+    .post-date   { color: var(--text-muted); font-size: .875rem; margin-bottom: .75rem; }
+    .post-title  { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; }
+    .post-tags   { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+    .post-body   { padding-bottom: 4rem; }
+    .post-body h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 .75rem; }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8; }
+    .post-body ul, .post-body ol { margin: 0 0 1rem 1.5rem; color: var(--text-secondary); line-height: 1.8; }
+    .post-body img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+    .post-body em  { font-style: italic; color: var(--text-muted); font-size: .875rem; }
+    .post-body code { background: var(--tag-bg); padding: .2rem .4rem; border-radius: 4px; font-size: .875em; }
+    .post-body pre  { background: var(--tag-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+    .post-body pre code { background: none; padding: 0; }
+    .back-link  { display: inline-block; margin: 1.5rem 0; color: var(--text-secondary); font-size: .875rem; }
+    .back-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="../index-zh.html" class="nav-link active">首頁</a>
+        <a href="../index.html" class="nav-link">English</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="切換深色模式">
+          <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <a href="../index-zh.html" class="back-link">← 返回首頁</a>
+
+      <div class="post-header">
+        <p class="post-date">2026-05-02</p>
+        <h1 class="post-title">再見了，Jekyll</h1>
+        <div class="post-tags"><span class="tag">Jekyll</span><span class="tag">GitHub Pages</span><span class="tag">Static Site</span><span class="tag">AI</span></div>
+      </div>
+
+      <article class="post-body">
+        <p>謝謝 AI，我終於擺脫 Jekyll 了。</p>
+<p>大概七八年前，我第一次知道 GitHub 提供免費個人網站。興奮了一陣之後，我被複雜的前後端設定打得落花流水。</p>
+<p>後來我遇見 Jekyll。是在某個 GitHub 頁面上撞見的。我注意到頁面底部有一行小字，寫著 “Powered by Jekyll。”我就像沙漠裡快渴死的人看見綠洲，立刻撲過去。外面有很多漂亮的版型，第一次架起來快得不得了，但沒多久細節就開始浮現。</p>
+<p>雖然說它應該讓你不必管前端程式和 CSS 語法，專心寫內容和調樣式，你還是得花時間找一個自己看得順眼的版型。好不容易選好了，又會發現還有不少地方得自己改。</p>
+<p>第二件煩人的事是 GitHub 會做套件安全檢查——本意是好事——但它會要你升級 gem，結果就和版型依賴的套件撞在一起，帶來破壞性更新。</p>
+<p>最糟的是，一旦你的客製化跟新版套件衝突，乾脆得重來。</p>
+<p>而且光為了一個網站，我還得裝 Ruby、Bundler 和一堆 gem，平常根本不會用到。</p>
+<p>跟維護整包比起來，這樣也許還算值得，但對我來說還是太重。沒多久我就把網站忘得一乾二淨。</p>
+<p>幾年後，我又為了一個小專案（冷氣遙控）對部落格燃起熱情。我換了另一個版型，好不容易發了一篇文章，但整體看起來還是半成品。這次我更沒時間處理其他雜事，因為家裡多了人要照顧。</p>
+<p>突然之間，一切都變了。LLM 進展太快，我在工作上已經用它做很多事。有一天我又想起這個網站，因為我決定認真做一件很有興趣的事（那是另一個故事……），想把紀錄放在某個地方。</p>
+<p>一開始我還是請 AI 用 Jekyll 架站，但沒過多久我就發現，乾脆請 AI 從頭刻一個網站也行。跟 AI 來回討論了幾輪功能可行性和我想要的視覺效果之後，AI 就開始大改。</p>
+<p>大概一兩個小時裡迭了幾次，好了——網站在這裡——自己的風格，純 HTML 和 JavaScript，沒那麼多套件管理，也比較不怕依賴炸掉！最重要的是，之後想加什麼，我都可以自己來，比較不用怕跟外面的東西不相容。</p>
+<p>所以……再見了，Jekyll！</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Nigel Zeng。純 HTML/CSS/JS 製作。</p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

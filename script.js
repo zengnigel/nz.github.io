@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   
   // ===============================
-  // Blog list — load from posts/index.json
+  // Blog list — load from posts/index.json or posts/index-zh.json
   // ===============================
   (function initBlogList() {
     const list = document.getElementById('blog-list');
@@ -69,11 +69,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const isPost = window.location.pathname.includes('/posts/');
     const prefix = isPost ? '../' : '';
 
-    fetch(prefix + 'posts/index.json')
+    var path = window.location.pathname;
+    var isZh = path.indexOf('index-zh.html') !== -1 || /-zh\.html$/i.test(path);
+    var indexName = isZh ? 'posts/index-zh.json' : 'posts/index.json';
+    var emptyMsg = isZh ? '敬請期待…' : 'Coming soon...';
+
+    fetch(prefix + indexName)
       .then(function(r) { return r.json(); })
       .then(function(posts) {
         if (!posts.length) {
-          list.innerHTML = '<p style="color: var(--text-secondary);">Coming soon...</p>';
+          list.innerHTML = '<p style="color: var(--text-secondary);">' + emptyMsg + '</p>';
           return;
         }
         list.innerHTML = posts.map(function(p) {
@@ -84,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
       })
       .catch(function() {
-        list.innerHTML = '<p style="color: var(--text-secondary);">Coming soon...</p>';
+        list.innerHTML = '<p style="color: var(--text-secondary);">' + emptyMsg + '</p>';
       });
   })();
 
@@ -93,15 +98,23 @@ document.addEventListener('DOMContentLoaded', function() {
   // Active nav link based on current page
   // ===============================
   (function initNavLinks() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(function(link) {
-      const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+    var path = window.location.pathname;
+    var file = path.split('/').pop();
+    if (!file || file === '') file = 'index.html';
+
+    var isZhContext = file === 'index-zh.html' || (/-zh\.html$/i.test(file));
+
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+      var href = link.getAttribute('href');
+      link.classList.remove('active');
+
+      var targetsZh = href.indexOf('index-zh') !== -1;
+      var targetsEn = href === 'index.html' || href.slice(-10) === 'index.html';
+
+      if (isZhContext && targetsZh) {
         link.classList.add('active');
-      } else {
-        link.classList.remove('active');
+      } else if (!isZhContext && file === 'index.html' && targetsEn) {
+        link.classList.add('active');
       }
     });
   })();

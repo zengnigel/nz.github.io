@@ -9,15 +9,15 @@ Requires:
     pip install markdown
 
 Output:
-    posts/<slug>.html  (one file per post)
-    posts/index.json   (post list for Blog section)
+    posts/<slug>.html       (English post)
+    posts/<slug>-zh.html    (Chinese post, from _posts/*.zh.md)
+    posts/index.json        (English blog list)
+    posts/index-zh.json     (Chinese blog list)
 """
 
-import os
 import re
 import json
 import markdown
-from datetime import datetime
 from pathlib import Path
 
 
@@ -26,7 +26,8 @@ from pathlib import Path
 REPO_ROOT   = Path(__file__).parent.parent
 POSTS_MD    = REPO_ROOT / "_posts"
 POSTS_HTML  = REPO_ROOT / "posts"
-POSTS_INDEX = POSTS_HTML / "index.json"
+POSTS_INDEX    = POSTS_HTML / "index.json"
+POSTS_INDEX_ZH = POSTS_HTML / "index-zh.json"
 
 
 # ── Frontmatter parser ─────────────────────────────────────────────────────
@@ -73,16 +74,43 @@ def filename_to_date(filename):
     return match.group(1) if match else ""
 
 
+def zh_filename_to_slug(filename):
+    """2026-05-02-goodbye-jekyll.zh.md → goodbye-jekyll"""
+    stem = Path(filename).stem
+    if not stem.endswith(".zh"):
+        return None
+    base = stem[:-3]
+    match = re.match(r"^\d{4}-\d{2}-\d{2}-(.*)", base)
+    return match.group(1) if match else base
+
+
 # ── HTML template ──────────────────────────────────────────────────────────
 
-def render_html(meta, body_html):
+def render_html(meta, body_html, zh=False):
     title   = meta.get("title", "Post")
     date    = meta.get("date", "")[:10]          # keep YYYY-MM-DD only
     tags    = meta.get("tags", [])
     tags_html = "".join(f'<span class="tag">{t}</span>' for t in tags)
 
+    if zh:
+        lang = "zh"
+        back_href = "../index-zh.html"
+        back_text = "← 返回首頁"
+        nav_primary = '<a href="../index-zh.html" class="nav-link active">首頁</a>'
+        nav_secondary = '<a href="../index.html" class="nav-link">English</a>'
+        aria_theme = "切換深色模式"
+        footer_text = "© 2025 Nigel Zeng。純 HTML/CSS/JS 製作。"
+    else:
+        lang = "en"
+        back_href = "../index.html"
+        back_text = "← Back to Home"
+        nav_primary = '<a href="../index.html" class="nav-link">Home</a>'
+        nav_secondary = '<a href="../index-zh.html" class="nav-link">中文</a>'
+        aria_theme = "Toggle dark mode"
+        footer_text = "© 2025 Nigel Zeng. Built with pure HTML/CSS/JS."
+
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="{lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,9 +140,9 @@ def render_html(meta, body_html):
   <header class="header">
     <div class="container">
       <nav class="nav">
-        <a href="../index.html" class="nav-link">Home</a>
-        <a href="../index-zh.html" class="nav-link">中文</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+        {nav_primary}
+        {nav_secondary}
+        <button id="theme-toggle" class="theme-toggle" aria-label="{aria_theme}">
           <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"></circle>
             <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
@@ -129,7 +157,7 @@ def render_html(meta, body_html):
 
   <main class="main">
     <div class="container">
-      <a href="../index.html" class="back-link">← Back to Home</a>
+      <a href="{back_href}" class="back-link">{back_text}</a>
 
       <div class="post-header">
         <p class="post-date">{date}</p>
@@ -145,7 +173,7 @@ def render_html(meta, body_html):
 
   <footer class="footer">
     <div class="container">
-      <p>© 2025 Nigel Zeng. Built with pure HTML/CSS/JS.</p>
+      <p>{footer_text}</p>
     </div>
   </footer>
 
@@ -162,9 +190,12 @@ def build():
     md = markdown.Markdown(extensions=["fenced_code", "tables", "attr_list"])
 
     posts = []
+    posts_zh = []
 
     for md_file in sorted(POSTS_MD.glob("*.md")):
         if md_file.name == ".placeholder":
+            continue
+        if md_file.name.endswith(".zh.md"):
             continue
 
         text             = md_file.read_text(encoding="utf-8")
@@ -176,7 +207,7 @@ def build():
         date             = meta.get("date", filename_to_date(md_file.name))[:10]
         title            = meta.get("title", slug)
 
-        html             = render_html(meta, body_html)
+        html             = render_html(meta, body_html, zh=False)
         out_path         = POSTS_HTML / f"{slug}.html"
         out_path.write_text(html, encoding="utf-8")
         print(f"  OK  {md_file.name}  ->  posts/{slug}.html")
@@ -189,10 +220,41 @@ def build():
             "url":   f"posts/{slug}.html",
         })
 
+    for md_file in sorted(POSTS_MD.glob("*.zh.md")):
+        text             = md_file.read_text(encoding="utf-8")
+        meta, body       = parse_frontmatter(text)
+        md.reset()
+        body_html        = md.convert(body)
+
+        slug             = zh_filename_to_slug(md_file.name)
+        if not slug:
+            print(f"  SKIP  {md_file.name}  (could not parse slug)")
+            continue
+
+        date             = meta.get("date", filename_to_date(md_file.name))[:10]
+        title            = meta.get("title", slug)
+
+        html             = render_html(meta, body_html, zh=True)
+        out_path         = POSTS_HTML / f"{slug}-zh.html"
+        out_path.write_text(html, encoding="utf-8")
+        print(f"  OK  {md_file.name}  ->  posts/{slug}-zh.html")
+
+        posts_zh.append({
+            "slug":  slug,
+            "title": title,
+            "date":  date,
+            "tags":  meta.get("tags", []),
+            "url":   f"posts/{slug}-zh.html",
+        })
+
     # Write index.json (sorted newest first)
     posts.sort(key=lambda p: p["date"], reverse=True)
     POSTS_INDEX.write_text(json.dumps(posts, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"  OK  posts/index.json  ({len(posts)} post(s))")
+
+    posts_zh.sort(key=lambda p: p["date"], reverse=True)
+    POSTS_INDEX_ZH.write_text(json.dumps(posts_zh, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"  OK  posts/index-zh.json  ({len(posts_zh)} post(s))")
 
 
 if __name__ == "__main__":
