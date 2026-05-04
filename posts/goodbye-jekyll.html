@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goodbye Jekyll</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232563eb%22 width=%22100%22 height=%22100%22 rx=%2215%22/><text x=%2250%22 y=%2270%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>N</text></svg>">
+  <style>
+    .post-header { padding: 3rem 0 1.5rem; }
+    .post-date   { color: var(--text-muted); font-size: .875rem; margin-bottom: .75rem; }
+    .post-title  { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; }
+    .post-tags   { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+    .post-body   { padding-bottom: 4rem; }
+    .post-body h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 .75rem; }
+    .post-body h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+    .post-body p  { margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8; }
+    .post-body ul, .post-body ol { margin: 0 0 1rem 1.5rem; color: var(--text-secondary); line-height: 1.8; }
+    .post-body img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+    .post-body em  { font-style: italic; color: var(--text-muted); font-size: .875rem; }
+    .post-body code { background: var(--tag-bg); padding: .2rem .4rem; border-radius: 4px; font-size: .875em; }
+    .post-body pre  { background: var(--tag-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+    .post-body pre code { background: none; padding: 0; }
+    .back-link  { display: inline-block; margin: 1.5rem 0; color: var(--text-secondary); font-size: .875rem; }
+    .back-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../index-zh.html" class="nav-link">中文</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <a href="../index.html" class="back-link">← Back to Home</a>
+
+      <div class="post-header">
+        <p class="post-date">2026-05-02</p>
+        <h1 class="post-title">Goodbye Jekyll</h1>
+        <div class="post-tags"><span class="tag">Jekyll</span><span class="tag">GitHub Pages</span><span class="tag">Static Site</span><span class="tag">AI</span></div>
+      </div>
+
+      <article class="post-body">
+        <p>Thanks to AI. I got rid of Jekyll.</p>
+<p>That was about seven or eight years ago when I first knew GitHub offer free personal websites. After a flurry of excitement, I was totally defeated by the complex front end and back end set-up.</p>
+<p>Then, I met Jekyll. It was on a certain GitHub page that attracted my eyeball. I noticed at the bottom of the page, there was a small line of text, written "Powered by Jekyll." I was like a thirsty person seeing oasis in desert, and turn to it immediately. There were a bunch of fancy templates out there, and the initial setup went like a breeze and was done quickly, but soon some subtleties started to emerge.</p>
+<p>Although it was supposed to free you from the front end code and CSS syntax and let you focus on the content and the style, you still need to spend some time looking for a layout that is most pleasing to your eyes. When you finally found one, you would soon realize there are quite a few places that require your customization.</p>
+<p>The second annoying thing is that your GitHub would do the package security check, which should be a good thing, but it required you to upgrade your gems and introduce breaking changes to the packages the template used.</p>
+<p>The worst is that when your customization conflicted with the new packages, you had to start it over.</p>
+<p>Besides, solely for a website, I needed to install Ruby, Bundler and a bunch of gems, which I would not use except for the website </p>
+<p>Comparing to maintain the whole stack, this might still be worth it, but probably still too heavy for me. Not long later, I totally forgot the website.</p>
+<p>Years later, I was once passionate about the blog again for a small project(ac controller). I tried another template, managed to put a post, but then everything looked unfinished. This time, I have even less time to do all the other stuff because then I had a family to take care.</p>
+<p>Suddenly, all things changed. LLM has progressed so fast that I could do a lot of things with it at work. One day, I thought of this site again because I determined to do something I'm really interested in (this was another story...), and want to track them somewhere.</p>
+<p>In the beginning, I still asked AI to build this site with Jekyll, but not long later, I realized that I could even ask AI to build the site from scratch. After a few back and forth discussions with AI on the feasibility of the feature and visual effects I'd like, AI started the overhauling work.</p>
+<p>Only a few iterations within an hour or two, voila - here is the site - self-owned style, much less package management or the worry of dependency breakage with pure HTML and Javascript! Most important, when I would like to add anything, I could just do it by myself w/o fearing any external compatibility issues.</p>
+<p>So... goodbye Jekyll!</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Nigel Zeng. Built with pure HTML/CSS/JS.</p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

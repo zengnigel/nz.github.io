@@ -1,5 +1,17 @@
 [
   {
+    "slug": "goodbye-jekyll",
+    "title": "Goodbye Jekyll",
+    "date": "2026-05-02",
+    "tags": [
+      "Jekyll",
+      "GitHub Pages",
+      "Static Site",
+      "AI"
+    ],
+    "url": "posts/goodbye-jekyll.html"
+  },
+  {
     "slug": "smart-ac-controller-progress",
     "title": "🚀 Smart IR-Based AI Air Conditioner Controller — My First Step",
     "date": "2025-07-02",
