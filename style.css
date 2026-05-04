@@ -200,6 +200,14 @@ a:hover {
   border-bottom: 2px solid var(--border);
 }
 
+.section-note {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: -0.75rem 0 1.25rem;
+  max-width: 42rem;
+}
+
 /* Projects Grid */
 .projects-grid {
   display: grid;
