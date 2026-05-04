@@ -86,7 +86,8 @@ def zh_filename_to_slug(filename):
 
 # ── HTML template ──────────────────────────────────────────────────────────
 
-def render_html(meta, body_html, zh=False):
+def render_html(meta, body_html, zh=False, lang_switch=None):
+    """lang_switch: (href_filename, link_label) e.g. ('goodbye-jekyll-zh.html', '中文') or None."""
     title   = meta.get("title", "Post")
     date    = meta.get("date", "")[:10]          # keep YYYY-MM-DD only
     tags    = meta.get("tags", [])
@@ -108,6 +109,25 @@ def render_html(meta, body_html, zh=False):
         nav_secondary = '<a href="../index-zh.html" class="nav-link">中文</a>'
         aria_theme = "Toggle dark mode"
         footer_text = "© 2025 Nigel Zeng. Built with pure HTML/CSS/JS."
+
+    if lang_switch:
+        switch_href, switch_label = lang_switch
+        if zh:
+            lang_switch_html = (
+                f'      <p class="lang-switch" role="note">'
+                f'<span class="lang-switch-text">其他語言：</span>'
+                f'<a class="lang-switch-link" href="{switch_href}">{switch_label}</a>'
+                f"</p>"
+            )
+        else:
+            lang_switch_html = (
+                f'      <p class="lang-switch" role="note">'
+                f'<span class="lang-switch-text">Also available in </span>'
+                f'<a class="lang-switch-link" href="{switch_href}">{switch_label}</a>'
+                f"</p>"
+            )
+    else:
+        lang_switch_html = ""
 
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -134,6 +154,9 @@ def render_html(meta, body_html, zh=False):
     .post-body pre code {{ background: none; padding: 0; }}
     .back-link  {{ display: inline-block; margin: 1.5rem 0; color: var(--text-secondary); font-size: .875rem; }}
     .back-link:hover {{ color: var(--accent); }}
+    .lang-switch {{ margin: -0.5rem 0 1.75rem; font-size: .875rem; color: var(--text-muted); }}
+    .lang-switch-link {{ color: var(--accent); font-weight: 600; text-decoration: none; }}
+    .lang-switch-link:hover {{ text-decoration: underline; }}
   </style>
 </head>
 <body>
@@ -163,6 +186,7 @@ def render_html(meta, body_html, zh=False):
         <p class="post-date">{date}</p>
         <h1 class="post-title">{title}</h1>
         <div class="post-tags">{tags_html}</div>
+        {lang_switch_html}
       </div>
 
       <article class="post-body">
@@ -207,7 +231,10 @@ def build():
         date             = meta.get("date", filename_to_date(md_file.name))[:10]
         title            = meta.get("title", slug)
 
-        html             = render_html(meta, body_html, zh=False)
+        zh_sibling = md_file.with_name(f"{md_file.stem}.zh.md")
+        lang_switch = (f"{slug}-zh.html", "中文") if zh_sibling.is_file() else None
+
+        html             = render_html(meta, body_html, zh=False, lang_switch=lang_switch)
         out_path         = POSTS_HTML / f"{slug}.html"
         out_path.write_text(html, encoding="utf-8")
         print(f"  OK  {md_file.name}  ->  posts/{slug}.html")
@@ -234,7 +261,12 @@ def build():
         date             = meta.get("date", filename_to_date(md_file.name))[:10]
         title            = meta.get("title", slug)
 
-        html             = render_html(meta, body_html, zh=True)
+        stem_full = Path(md_file).stem
+        base_stem = stem_full[:-3] if stem_full.endswith(".zh") else stem_full
+        en_sibling = md_file.parent / f"{base_stem}.md"
+        lang_switch = (f"{slug}.html", "English") if en_sibling.is_file() else None
+
+        html             = render_html(meta, body_html, zh=True, lang_switch=lang_switch)
         out_path         = POSTS_HTML / f"{slug}-zh.html"
         out_path.write_text(html, encoding="utf-8")
         print(f"  OK  {md_file.name}  ->  posts/{slug}-zh.html")
